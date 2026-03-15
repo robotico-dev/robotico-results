@@ -1,4 +1,8 @@
 = Robotico.Result — Design
+:toc: left
+:toclevels: 3
+:sectnums:
+:icons: font
 
 This document explains the design decisions behind Robotico.Result: why Results are values, how errors are modeled, and when to use which API.
 

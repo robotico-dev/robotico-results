@@ -1,4 +1,8 @@
 = Robotico.Result — Documentation
+:toc: left
+:toclevels: 3
+:sectnums:
+:icons: font
 
 Industry-standard Result and error types for .NET. Railway-oriented, immutable, zero dependencies.
 
