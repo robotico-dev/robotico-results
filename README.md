@@ -6,7 +6,7 @@ Industry-standard Result and error types for .NET 8 and .NET 10. Railway-oriente
 [![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/download/dotnet/10.0)
 [![C#](https://img.shields.io/badge/C%23-12-239120?logo=csharp)](https://learn.microsoft.com/en-us/dotnet/csharp/)
 [![NuGet](https://img.shields.io/nuget/v/Robotico.Result.svg)](https://www.nuget.org/packages/Robotico.Result/)
-[![Build](https://github.com/robotico/robotico-results/actions/workflows/publish.yml/badge.svg)](https://github.com/robotico/robotico-results/actions/workflows/publish.yml)
+[![Build](https://github.com/robotico-dev/robotico-results/actions/workflows/publish.yml/badge.svg)](https://github.com/robotico-dev/robotico-results/actions/workflows/publish.yml)
 
 ## Features
 
