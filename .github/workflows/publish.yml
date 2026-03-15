@@ -96,12 +96,5 @@ jobs:
           dotnet pack src/Robotico.Result/Robotico.Result.Lib.csproj -c Release --no-restore \
             -p:Version=${{ steps.version.outputs.version }} -o artifacts
 
-      - name: Push to NuGet.org
-        run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
-        if: env.NUGET_PUBLISH == 'true'
-        env:
-          NUGET_PUBLISH: ${{ secrets.NUGET_API_KEY != '' && 'true' || 'false' }}
-
-      - name: Push to GitHub Packages (optional)
+      - name: Push to GitHub Packages
         run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --skip-duplicate
-        if: github.event_name == 'release' && github.event.action == 'published'
