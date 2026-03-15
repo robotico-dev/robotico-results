@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Robotico.Result</RootNamespace>
+    <AssemblyName>Robotico.Result</AssemblyName>
+    <PackageIcon>logosquare.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/robotico/robotico-results</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/robotico/robotico-results</RepositoryUrl>
+    <RepositoryBranch>main</RepositoryBranch>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" Visible="false" />
+    <!-- Package icon: single source at repo assets (see assets/README.md). -->
+    <None Include="..\..\assets\logosquare.png" Pack="true" PackagePath="\" Link="logosquare.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>

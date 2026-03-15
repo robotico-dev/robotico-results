@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Robotico.Result.Benchmarks</RootNamespace>
+    <AssemblyName>Robotico.Result.Benchmarks</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <!-- Benchmarks run on one host TFM; net8.0 has broad BenchmarkDotNet support. -->
+    <TargetFrameworks>net8.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>true</ImplicitUsings>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <PackageId>Robotico.Result.Benchmarks</PackageId>
+    <NoWarn>$(NoWarn);CA1707;CA1515;CA1305;CA1822</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.15.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Robotico.Result\Robotico.Result.Lib.csproj" />
+  </ItemGroup>
+
+</Project>

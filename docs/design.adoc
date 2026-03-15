@@ -1,0 +1,95 @@
+= Robotico.Result — Design
+
+This document explains the design decisions behind Robotico.Result: why Results are values, how errors are modeled, and when to use which API.
+
+== Design Principles
+
+=== Results as values
+
+Result types are *values*, not references. They are `readonly struct`s:
+
+* No heap allocation on the success path in synchronous code.
+* Every transformation returns a new instance; the original is unchanged.
+* No implicit conversions; conversions between `Result`, `Result<TData>`, and `Result<TData, TError>` are explicit (`FromVoid`, `From`, `FromWithIError`) to satisfy analyzer rules and keep intent clear.
+
+[source,mermaid]
+----
+flowchart LR
+  A[Result.Success&#40;42&#41;] -->|Map| B[Result.Success&#40;&quot;42&quot;&#41;]
+  A -.->|unchanged| A
+  B -->|Bind| C[Result.Success&#40;...&#41;]
+----
+
+=== Errors as values
+
+Errors are not exceptions inside the library. They implement `IError` and carry:
+
+* `Message`, `Code`, `Severity` for diagnostics and handling.
+* `InnerError` for cause chains.
+* `Context` for structured data.
+
+This allows:
+
+* Pattern matching and error mapping without throwing.
+* Aggregation (e.g. `AggregateError`) when combining multiple failures.
+* Clear separation: error *model* vs result *container*.
+
+=== Single exception boundary
+
+Exceptions are used only at the boundary:
+
+[source,mermaid]
+----
+flowchart LR
+  subgraph Domain["Domain"]
+    R[Result world]
+  end
+  subgraph Edge["Edge"]
+    E[ExpectSuccess / Try]
+  end
+  R --> E
+  E -->|throw| API[API / Process]
+  API -->|catch| E
+  E -->|Result| R
+----
+
+* *Going out*: Call `ExpectSuccess()` (or `ExpectSuccess(exceptionBuilder)`) when you must hand a value or throw (e.g. in a controller).
+* *Coming in*: Use `ResultUtilities.Try` or `TryAsync` to wrap throwing code and get a `Result` or `Result<T>`.
+
+== When to Use Which Type
+
+*Choosing a result type:* Prefer the smallest type that fits your use case. Use `Result` when there is no success value (e.g. save, delete). Use `Result<TData>` when you need a success value and `IError` is enough for callers. Use `Result<TData, TError>` when callers must handle or switch on a specific error type (e.g. `ValidationError`, `DomainError<TCode>`).
+
+| Type | Use when |
+|------|----------|
+| `Result` | Operation succeeds or fails with no success value (e.g. save, delete). |
+| `Result<TData>` | Operation returns a value or an error; error type is `IError`. |
+| `Result<TData, TError>` | You need a strongly typed error (e.g. `ValidationError`, custom domain error) at the call site. |
+
+== API Naming and Symmetry
+
+The library uses **industry-standard naming** (Map, Bind, MapError, Match, Tap, Recover) rather than LINQ-only names (Select, SelectMany). This aligns with common practice in functional and railway-oriented libraries and keeps the API consistent across sync and async overloads.
+
+* **Ensure**: Available for both `Result<TData>` and `Result<TData, TError>`. Use a predicate and an error factory; on failure the factory produces the error (e.g. `IError` or your typed `TError`).
+* **RecoverWith**: Void `Result` has `RecoverWith(Result fallback)`. Typed results have both `RecoverWith(fallbackValue)` and `RecoverWith(Result fallback)` so you can substitute a full result (success or error) when the current one is an error.
+
+== Allocation and Performance
+
+* Sync success path: no heap allocation (structs only).
+* Async methods allocate only for the returned `Task` and continuations.
+* Hot paths (Map, Bind, Collect) are good candidates for benchmarking; see the `Robotico.Result.Benchmarks` project.
+
+== Combining results
+
+Use the right API depending on what you need:
+
+* **Combine (2–4 results, tuple)** — Use `ResultUtilities.Combine(r1, r2)` (and 3- and 4-arg overloads) when you have a small, fixed number of *heterogeneous* results and want a single result of a tuple. All errors are aggregated on failure.
+* **Combine (N results, same type)** — Use `ResultUtilities.Combine(results)` when you have many results of the *same* type and want `Result<ImmutableArray<T>>`. Implemented via `Collect`; first error wins.
+* **Collect / Sequence** — Use the extension methods `results.Collect()` or `results.Sequence()` when you have an `IEnumerable<Result<T>>` and want one `Result<ImmutableArray<T>>`. First error wins. Use `ChooseSuccessful` when you want to keep only successes and drop errors.
+
+In short: tuple of 2–4 values → `Combine(r1, r2, ...)`. Many values of the same type → `Combine(enumerable)` or `Collect`/`Sequence`.
+
+== Related
+
+* link:architecture.adoc[Architecture] — type hierarchy and data flow.
+* link:../README.md[README] — quick start and feature list.

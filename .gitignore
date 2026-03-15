@@ -1,0 +1,63 @@
+# Build
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Bb]uild/
+[Bb]uildResult/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Oo]ut/
+msbuild.binlog
+*.log
+
+# Visual Studio
+.vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.sln.docstates
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+packages/
+
+# Test / coverage
+[Tt]est[Rr]esult*/
+[Cc]overage/
+*.coverage
+*.coveragexml
+coverage*.json
+coverage*.xml
+
+# BenchmarkDotNet
+BenchmarkDotNet.Artifacts/
+
+# IDE / Editor
+.idea/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Rider
+.idea/
+
+# CodeRush
+*.cr.userlog
+
+# Doc build (if any)
+doc/build/

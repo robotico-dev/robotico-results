@@ -1,0 +1,30 @@
+= Trim and AOT Compatibility
+
+Robotico.Result is designed to work well with .NET's link:https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/[Native AOT] and link:https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/trim-self-contained[trimmed] deployment models.
+
+== Summary
+
+* **Trim-friendly**: The library does not use reflection on hot paths. Result types are `readonly struct`s; all operations are static method calls and extension methods. No dynamic code generation or reflection is required for normal Map, Bind, Match, Collect, Combine, or Try usage.
+* **AOT-compatible**: The same guarantees apply: no reflection at runtime for core operations. You can reference Robotico.Result from an AOT-published application without additional configuration for the library itself.
+* **Dependencies**: Robotico.Result has zero package dependencies. Only the .NET BCL is used (e.g. `System.Collections.Immutable` for `ImmutableArray` in Collect/Combine). These are well-supported in trimmed and AOT scenarios.
+
+== What We Avoid
+
+* Reflection on result or error types in hot paths (Map, Bind, Collect, Combine, etc.).
+* Dynamic assembly loading or runtime code generation.
+* Serialization that would require reflection (the library does not ship serialization formatters; if you serialize errors, that is outside the library's scope).
+
+== If You See Trim or AOT Warnings
+
+If you use trimming or AOT and see warnings that mention Robotico.Result:
+
+1. Ensure you are on a recent version of the library.
+2. If the warning points to a specific member, it may be from your code (e.g. generic instantiation). You can use `[DynamicDependency]` or trimmer directives in your assembly if needed.
+3. The library does not currently use `[RequiresUnreferencedCode]` or `[DynamicDependency]` because the public API does not rely on unreferenced code or reflection. If you believe a warning is a false positive from the library, please open an issue.
+
+== Version and Targets
+
+* Supported targets: `net8.0`, `net10.0`.
+* Trim and AOT behavior may vary slightly by target framework; we test on the supported frameworks.
+
+See link:architecture.adoc[Architecture] and link:design.adoc[Design] for general documentation.

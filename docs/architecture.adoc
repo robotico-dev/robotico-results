@@ -1,0 +1,133 @@
+= Robotico.Result — Architecture
+
+This document describes the architecture of the Robotico.Result library: type hierarchy, data flow, and the boundary between the Result world and the exception world.
+
+== Overview
+
+Robotico.Result is a single-assembly, zero-dependency library that provides railway-oriented Result types and a small error hierarchy for .NET. All result types are immutable value types (`readonly struct`); errors are represented as values implementing `IError`.
+
+== Type Hierarchy
+
+The library is organized into core result types, extension methods, utilities, and error types.
+
+[source,mermaid]
+----
+flowchart TB
+  subgraph Results["Result types"]
+    R[Result]
+    RT[Result&lt;TData&gt;]
+    RTE[Result&lt;TData, TError&gt;]
+  end
+  subgraph Extensions["Extensions"]
+    RE[ResultExtensions]
+    RTExt[ResultTaskExtensions]
+  end
+  subgraph Utilities["Utilities"]
+    RU[ResultUtilities]
+  end
+  subgraph Errors["Error model"]
+    IErr[IError]
+    Err[Error]
+    SE[SimpleError]
+    VE[ValidationError]
+    DE[DomainError]
+    AE[AggregateError]
+  end
+  R --> RT
+  RT --> RTE
+  RE --> R
+  RE --> RT
+  RE --> RTE
+  RTExt --> RT
+  RTExt --> RTE
+  RU --> R
+  RU --> RT
+  IErr <|.. Err
+  IErr <|.. SE
+  IErr <|.. VE
+  IErr <|.. DE
+  IErr <|.. AE
+  R -.-> IErr
+  RT -.-> IErr
+  RTE -.-> IErr
+----
+
+== Data Flow: Success vs Error
+
+Operations either succeed (with optional data) or fail (with an error). Transformations keep you on one track; errors propagate without explicit branching until you match or convert at the boundary.
+
+[source,mermaid]
+----
+flowchart LR
+  subgraph Success["Success path"]
+    S1[Result.Success / Success&lt;T&gt;]
+    S2[Map / Bind]
+    S3[Match / Tap / Recover]
+    S1 --> S2 --> S3
+  end
+  subgraph Error["Error path"]
+    E1[Result.Error / Error&lt;T&gt;]
+    E2[MapError / Recover]
+    E3[ExpectSuccess / Match]
+    E1 --> E2 --> E3
+  end
+  S2 -.->|predicate fail / bind returns error| E1
+  S3 -.->|recover| S1
+  E2 -.->|map error| E1
+----
+
+== Exception Boundary
+
+Results are kept inside the domain; conversion to exceptions happens only at process or API boundaries (e.g. controllers, entry points, or when integrating with exception-based APIs).
+
+[source,mermaid]
+----
+flowchart TB
+  subgraph ResultWorld["Result world (domain)"]
+    Op1[Operation 1]
+    Op2[Operation 2]
+    Op3[Operation 3]
+    Op1 -->|Result&lt;T&gt;| Op2 -->|Result&lt;T&gt;| Op3
+  end
+  subgraph Boundary["Boundary"]
+    Expect[ExpectSuccess / ExpectSuccess&#40;builder&#41;]
+    Try[Try / TryAsync]
+  end
+  subgraph ExceptionWorld["Exception world (API / process)"]
+    Controller[Controller / Entry point]
+    External[External exception-based API]
+  end
+  Op3 -->|Result| Expect
+  Expect -->|throws| Controller
+  External -->|exceptions| Try
+  Try -->|Result| Op1
+----
+
+* `ExpectSuccess()` and `ExpectSuccess(Func<IError, Exception>)` are the main boundary: they throw if the result is an error.
+* `ResultUtilities.Try` and `TryAsync` wrap throwing code and return a `Result` or `Result<T>`, bringing exceptions into the Result world.
+
+== Assembly Layout
+
+[source,mermaid]
+----
+flowchart LR
+  subgraph Lib["Robotico.Result (library)"]
+    Core[Result.cs, ResultOfT.cs, ResultOfTDataAndTError.cs]
+    Ext[ResultExtensions.cs, ResultTaskExtensions.cs]
+    Util[ResultUtilities.cs]
+    ErrFolder[Errors/]
+  end
+  subgraph Tests["Robotico.Result.Tests"]
+    T1[ResultBasicsTests, ResultTaskExtensionsTests, ...]
+  end
+  Lib --> Tests
+----
+
+== Summary
+
+* **Result types**: `Result`, `Result<TData>`, `Result<TData, TError>` — all `readonly struct`, immutable.
+* **Errors**: Values implementing `IError`; multiple concrete types for validation, domain, aggregation.
+* **Transformations**: Map, Bind, MapError, Match, Tap, Recover (sync and async) keep control flow in the Result world.
+* **Boundary**: Use `ExpectSuccess` only at the edge; use `Try`/`TryAsync` to capture exceptions and turn them into Results.
+
+See link:design.adoc[Design] for design decisions and usage guidelines.

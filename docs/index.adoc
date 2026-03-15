@@ -1,0 +1,26 @@
+= Robotico.Result — Documentation
+
+Industry-standard Result and error types for .NET. Railway-oriented, immutable, zero dependencies.
+
+== Quick links
+
+* link:architecture.adoc[Architecture] — Type hierarchy, data flow, exception boundary (with Mermaid diagrams).
+* link:design.adoc[Design] — Design principles, when to use which type, API naming.
+* link:trim-aot.adoc[Trim and AOT] — Trim-friendly and AOT-compatible deployment.
+
+== Building the docs
+
+These docs are written in AsciiDoc. To produce HTML (e.g. with Asciidoctor):
+
+----
+asciidoctor docs/index.adoc -o docs/index.html
+asciidoctor docs/architecture.adoc -o docs/architecture.html
+asciidoctor docs/design.adoc -o docs/design.html
+----
+
+Or use the AsciiDoc extension in your editor for preview. Mermaid diagrams render in Asciidoctor when using the https://asciidoctor.org/docs/asciidoctor-diagram/[asciidoctor-diagram] extension or a converter that supports `[source,mermaid]` blocks.
+
+== Repository
+
+* Source: link:https://github.com/robotico/robotico-results[robotico-results]
+* Package: https://www.nuget.org/packages/Robotico.Result/[NuGet]

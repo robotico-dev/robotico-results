@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Robotico.Result/Robotico.Result.Lib.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Robotico.Result.Tests/Robotico.Result.Tests.csproj" />
+  </Folder>
+  <Folder Name="/benchmarks/">
+    <Project Path="benchmarks/Robotico.Result.Benchmarks/Robotico.Result.Benchmarks.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="README.md" />
+  </Folder>
+</Solution>
