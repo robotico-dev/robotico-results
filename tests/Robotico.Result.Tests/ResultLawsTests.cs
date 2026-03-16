@@ -21,7 +21,7 @@ public class ResultLawsTests
     [Fact]
     public void Map_identity_error_preserves_error()
     {
-        SimpleError err = new SimpleError("e");
+        SimpleError err = new("e");
         Result<int> r = Result.Error<int>(err);
         Result<int> mapped = r.Map(x => x);
         Assert.True(mapped.IsError(out IError? e));
@@ -42,7 +42,7 @@ public class ResultLawsTests
     [Fact]
     public void Bind_Success_identity_error_preserves_error()
     {
-        SimpleError err = new SimpleError("fail");
+        SimpleError err = new("fail");
         Result<int> r = Result.Error<int>(err);
         Result<int> bound = r.Bind(x => Result.Success(x));
         Assert.True(bound.IsError(out IError? e));
@@ -54,7 +54,7 @@ public class ResultLawsTests
     [Fact]
     public void Map_error_propagates_error_unchanged()
     {
-        SimpleError err = new SimpleError("x");
+        SimpleError err = new("x");
         Result<int> r = Result.Error<int>(err);
         Result<string> mapped = r.Map(x => x.ToString(CultureInfo.InvariantCulture));
         Assert.True(mapped.IsError(out IError? e));
@@ -64,7 +64,7 @@ public class ResultLawsTests
     [Fact]
     public void Bind_error_propagates_error_unchanged()
     {
-        SimpleError err = new SimpleError("y");
+        SimpleError err = new("y");
         Result<int> r = Result.Error<int>(err);
         Result<string> bound = r.Bind(x => Result.Success(x.ToString(CultureInfo.InvariantCulture)));
         Assert.True(bound.IsError(out IError? e));
@@ -96,7 +96,7 @@ public class ResultLawsTests
     [Fact]
     public void Void_Bind_error_propagates()
     {
-        SimpleError err = new SimpleError("v");
+        SimpleError err = new("v");
         Result r = Result.Error(err);
         Result<int> bound = r.Bind(() => Result.Success(1));
         Assert.True(bound.IsError(out IError? e));
@@ -106,7 +106,7 @@ public class ResultLawsTests
     [Fact]
     public void Void_Map_error_propagates()
     {
-        SimpleError err = new SimpleError("m");
+        SimpleError err = new("m");
         Result r = Result.Error(err);
         Result<string> mapped = r.Map(() => "ok");
         Assert.True(mapped.IsError(out IError? e));

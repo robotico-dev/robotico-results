@@ -72,7 +72,7 @@ public class ResultPropertyTests
     [Fact]
     public void Map_error_propagates_unchanged_for_any_error_and_func()
     {
-        SimpleError e = new SimpleError("err");
+        SimpleError e = new("err");
         Gen.Int.Sample(n =>
         {
             Result<int> r = Result.Error<int>(e);

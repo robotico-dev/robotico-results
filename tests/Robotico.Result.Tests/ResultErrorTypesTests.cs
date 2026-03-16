@@ -16,7 +16,7 @@ public class ResultErrorTypesTests
     [Fact]
     public void MapError_extension_error_transforms_error()
     {
-        SimpleError err = new SimpleError("original");
+        SimpleError err = new("original");
         Result<int> r = Result.Error<int>(err);
         Result<int> mapped = Result.From(r.MapError(e => new SimpleError(e.Message + "_mapped", "MAPPED")));
         Assert.True(mapped.IsError(out IError? e));
@@ -48,7 +48,7 @@ public class ResultErrorTypesTests
     [Fact]
     public void DomainError_Code_returns_domain_code_string()
     {
-        TestDomainError err = new TestDomainError(TestDomainCode.NotFound, "Resource missing");
+        TestDomainError err = new(TestDomainCode.NotFound, "Resource missing");
         Assert.Equal("NotFound", err.Code);
         Assert.Equal(TestDomainCode.NotFound, err.DomainCode);
     }
@@ -56,7 +56,7 @@ public class ResultErrorTypesTests
     [Fact]
     public void Result_with_DomainError_roundtrip()
     {
-        TestDomainError err = new TestDomainError(TestDomainCode.Unauthorized, "Access denied");
+        TestDomainError err = new(TestDomainCode.Unauthorized, "Access denied");
         Result<int, TestDomainError> r = Result.Error<int, TestDomainError>(err);
         Assert.True(r.IsError(out TestDomainError? e));
         Assert.Same(err, e);
@@ -68,9 +68,9 @@ public class ResultErrorTypesTests
     [Fact]
     public void AggregateError_of_T_holds_typed_errors()
     {
-        Error e1 = new Error("a");
-        Error e2 = new Error("b");
-        AggregateError<Error> agg = new AggregateError<Error>("Combined", new[] { e1, e2 });
+        Error e1 = new("a");
+        Error e2 = new("b");
+        AggregateError<Error> agg = new("Combined", new[] { e1, e2 });
         Assert.Equal(2, agg.Errors.Length);
         Assert.Same(e1, agg.Errors[0]);
         Assert.Same(e2, agg.Errors[1]);
@@ -80,7 +80,7 @@ public class ResultErrorTypesTests
     [Fact]
     public void GetErrorMessages_flattens_AggregateError()
     {
-        AggregateError agg = new AggregateError("Top", new[] { new Error("inner1"), new Error("inner2") });
+        AggregateError agg = new("Top", new[] { new Error("inner1"), new Error("inner2") });
         List<string> messages = agg.GetErrorMessages().ToList();
         Assert.Equal(2, messages.Count);
         Assert.Contains("inner1", messages);

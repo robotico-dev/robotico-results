@@ -122,6 +122,16 @@ csharp_space_between_method_call_parameter_list_and_open_brace = false
 # -----------------------------------------------------------------------------
 # Analyzer severities (library-quality bar)
 # -----------------------------------------------------------------------------
+# IDE style rules (enforced)
+dotnet_diagnostic.IDE0005.severity = warning
+dotnet_diagnostic.IDE0011.severity = warning
+dotnet_diagnostic.IDE0028.severity = warning
+dotnet_diagnostic.IDE0033.severity = warning
+dotnet_diagnostic.IDE0034.severity = warning
+dotnet_diagnostic.IDE0037.severity = warning
+dotnet_diagnostic.IDE0041.severity = warning
+dotnet_diagnostic.IDE0049.severity = warning
+dotnet_diagnostic.IDE0090.severity = warning
 # Async: ConfigureAwait in library code.
 dotnet_diagnostic.CA2007.severity = warning
 # Validate arguments of public methods (null/range checks).

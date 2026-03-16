@@ -16,7 +16,7 @@ public class ResultVoidAndTypedErrorTests
     [Fact]
     public void Result_void_Map_error_propagates()
     {
-        SimpleError err = new SimpleError("v");
+        SimpleError err = new("v");
         Result r = Result.Error(err);
         Result<string> mapped = r.Map(() => "ok");
         Assert.True(mapped.IsError(out IError? e));
@@ -35,7 +35,7 @@ public class ResultVoidAndTypedErrorTests
     [Fact]
     public void Result_void_Bind_error_propagates()
     {
-        SimpleError err = new SimpleError("b");
+        SimpleError err = new("b");
         Result r = Result.Error(err);
         Result<int> bound = r.Bind(() => Result.Success(1));
         Assert.True(bound.IsError(out IError? e));
@@ -63,7 +63,7 @@ public class ResultVoidAndTypedErrorTests
     [Fact]
     public async Task Result_void_MapAsync_error_propagates()
     {
-        SimpleError err = new SimpleError("ma");
+        SimpleError err = new("ma");
         Result r = Result.Error(err);
         Result<string> mapped = await r.MapAsync(async () => await Task.FromResult("x"));
         Assert.True(mapped.IsError(out IError? e));
@@ -73,7 +73,7 @@ public class ResultVoidAndTypedErrorTests
     [Fact]
     public async Task Result_void_BindAsync_error_propagates()
     {
-        SimpleError err = new SimpleError("ba");
+        SimpleError err = new("ba");
         Result r = Result.Error(err);
         Result<int> bound = await r.BindAsync(async () => await Task.FromResult(Result.Success(1)));
         Assert.True(bound.IsError(out IError? e));
@@ -93,7 +93,7 @@ public class ResultVoidAndTypedErrorTests
     [Fact]
     public void Result_void_Match_error_returns_onError()
     {
-        SimpleError err = new SimpleError("e");
+        SimpleError err = new("e");
         Result r = Result.Error(err);
         int x = r.Match(() => 1, e => e.Message.Length);
         Assert.Equal(1, x);
@@ -111,7 +111,7 @@ public class ResultVoidAndTypedErrorTests
     [Fact]
     public void Result_void_Match_actions_error_calls_onError()
     {
-        SimpleError err = new SimpleError("x");
+        SimpleError err = new("x");
         Result r = Result.Error(err);
         int side = 0;
         r.Match(() => side = 1, _ => side = -1);
@@ -141,7 +141,7 @@ public class ResultVoidAndTypedErrorTests
     [Fact]
     public void Result_void_TapError_error_invokes_action()
     {
-        SimpleError err = new SimpleError("e");
+        SimpleError err = new("e");
         Result r = Result.Error(err);
         IError? captured = null;
         Result t = r.TapError(e => captured = e);
@@ -180,7 +180,7 @@ public class ResultVoidAndTypedErrorTests
     [Fact]
     public void Result_TData_TError_Match_error_uses_onError()
     {
-        SimpleError err = new SimpleError("typed");
+        SimpleError err = new("typed");
         Result<int, SimpleError> r = Result.Error<int, SimpleError>(err);
         int x = r.Match(v => v, e => e.Message.Length);
         Assert.Equal(5, x);
@@ -202,7 +202,7 @@ public class ResultVoidAndTypedErrorTests
     [Fact]
     public void Result_TData_TError_TapError_error_invokes_action()
     {
-        SimpleError err = new SimpleError("tap");
+        SimpleError err = new("tap");
         Result<int, SimpleError> r = Result.Error<int, SimpleError>(err);
         SimpleError? captured = null;
         Result<int, SimpleError> t = r.TapError(e => captured = e);

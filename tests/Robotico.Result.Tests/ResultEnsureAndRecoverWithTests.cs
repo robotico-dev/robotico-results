@@ -11,7 +11,7 @@ public class ResultEnsureAndRecoverWithTests
     public void Ensure_TDataTError_predicate_pass_returns_same_result()
     {
         Result<int, SimpleError> r = Result.Success<int, SimpleError>(42);
-        Result<int, SimpleError> ensured = r.Ensure(x => x > 0, _ => new SimpleError("must be positive"));
+        Result<int, SimpleError> ensured = r.Ensure(x => x > 0, _ => new("must be positive"));
         Assert.True(ensured.IsSuccess(out int value));
         Assert.Equal(42, value);
     }
@@ -20,7 +20,7 @@ public class ResultEnsureAndRecoverWithTests
     public void Ensure_TDataTError_predicate_fail_returns_error_from_factory()
     {
         Result<int, SimpleError> r = Result.Success<int, SimpleError>(42);
-        SimpleError err = new SimpleError("must be negative");
+        SimpleError err = new("must be negative");
         Result<int, SimpleError> ensured = r.Ensure(x => x < 0, _ => err);
         Assert.True(ensured.IsError(out SimpleError? e));
         Assert.Same(err, e);
@@ -29,9 +29,9 @@ public class ResultEnsureAndRecoverWithTests
     [Fact]
     public void Ensure_TDataTError_on_error_returns_same_error()
     {
-        SimpleError original = new SimpleError("original");
+        SimpleError original = new("original");
         Result<int, SimpleError> r = Result.Error<int, SimpleError>(original);
-        Result<int, SimpleError> ensured = r.Ensure(x => x > 0, _ => new SimpleError("other"));
+        Result<int, SimpleError> ensured = r.Ensure(x => x > 0, _ => new("other"));
         Assert.True(ensured.IsError(out SimpleError? e));
         Assert.Same(original, e);
     }
@@ -41,7 +41,7 @@ public class ResultEnsureAndRecoverWithTests
     {
         Result<int, SimpleError> r = Result.Success<int, SimpleError>(1);
         ArgumentNullException ex = Assert.Throws<ArgumentNullException>(() =>
-            r.Ensure((Func<int, bool>)null!, _ => new SimpleError("x")));
+            r.Ensure((Func<int, bool>)null!, _ => new("x")));
         Assert.Equal("predicate", ex.ParamName);
     }
 
@@ -79,7 +79,7 @@ public class ResultEnsureAndRecoverWithTests
     [Fact]
     public void RecoverWith_ResultTData_error_fallback_also_error_returns_fallback_error()
     {
-        SimpleError errFallback = new SimpleError("fallback");
+        SimpleError errFallback = new("fallback");
         Result<int> r = Result.Error<int>(new SimpleError("e"));
         Result<int> fallback = Result.Error<int>(errFallback);
         Result<int> recovered = r.RecoverWith(fallback);
@@ -112,7 +112,7 @@ public class ResultEnsureAndRecoverWithTests
     [Fact]
     public void RecoverWith_ResultTDataTError_error_fallback_also_error_returns_fallback_error()
     {
-        SimpleError errFallback = new SimpleError("fallback");
+        SimpleError errFallback = new("fallback");
         Result<int, SimpleError> r = Result.Error<int, SimpleError>(new SimpleError("e"));
         Result<int, SimpleError> fallback = Result.Error<int, SimpleError>(errFallback);
         Result<int, SimpleError> recovered = r.RecoverWith(fallback);

@@ -15,7 +15,7 @@ public class ResultBasicsTests
     [Fact]
     public void Error_void_IsError()
     {
-        SimpleError err = new SimpleError("fail");
+        SimpleError err = new("fail");
         Result r = Result.Error(err);
         Assert.True(r.IsError(out IError? e));
         Assert.Same(err, e);
@@ -34,7 +34,7 @@ public class ResultBasicsTests
     [Fact]
     public void Error_TData_IsError()
     {
-        SimpleError err = new SimpleError("oops");
+        SimpleError err = new("oops");
         Result<int> r = Result.Error<int>(err);
         Assert.True(r.IsError(out IError? e));
         Assert.Same(err, e);
@@ -53,7 +53,7 @@ public class ResultBasicsTests
     [Fact]
     public void Map_propagates_error()
     {
-        SimpleError err = new SimpleError("x");
+        SimpleError err = new("x");
         Result<int> r = Result.Error<int>(err);
         Result<string> mapped = r.Map(x => x.ToString(CultureInfo.InvariantCulture));
         Assert.True(mapped.IsError(out IError? e));
@@ -72,7 +72,7 @@ public class ResultBasicsTests
     [Fact]
     public void Bind_propagates_error()
     {
-        SimpleError err = new SimpleError("y");
+        SimpleError err = new("y");
         Result<int> r = Result.Error<int>(err);
         Result<string> bound = r.Bind(x => Result.Success(x.ToString(CultureInfo.InvariantCulture)));
         Assert.True(bound.IsError(out IError? e));
@@ -83,7 +83,7 @@ public class ResultBasicsTests
     public void MapError_transforms_error()
     {
         Result<int> r = Result.Error<int>(new SimpleError("a"));
-        Result<int, SimpleError> mapped = r.MapError<SimpleError>(e => new SimpleError(e.Message + "!", e.Code, e.Severity));
+        Result<int, SimpleError> mapped = r.MapError<SimpleError>(e => new(e.Message + "!", e.Code, e.Severity));
         Assert.True(mapped.IsError(out SimpleError? e));
         Assert.Equal("a!", e!.Message);
     }
@@ -91,7 +91,7 @@ public class ResultBasicsTests
     [Fact]
     public void ExpectSuccess_throws_on_error()
     {
-        SimpleError err = new SimpleError("z");
+        SimpleError err = new("z");
         Result<int> r = Result.Error<int>(err);
         ResultErrorException<IError> ex = Assert.Throws<ResultErrorException<IError>>(() => r.ExpectSuccess());
         Assert.Same(err, ex.Error);
@@ -108,7 +108,7 @@ public class ResultBasicsTests
     [Fact]
     public void Result_Error_from_IError()
     {
-        SimpleError err = new SimpleError("e");
+        SimpleError err = new("e");
         Result<int> r = Result.Error<int>(err);
         Assert.True(r.IsError(out IError? e));
         Assert.Same(err, e);

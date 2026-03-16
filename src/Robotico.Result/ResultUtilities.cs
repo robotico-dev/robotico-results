@@ -65,7 +65,7 @@ public static class ResultUtilities
 
     private static List<IError> CollectErrorList(IError? e1, bool ok1, IError? e2, bool ok2)
     {
-        List<IError> errors = new List<IError>();
+        List<IError> errors = [];
         if (!ok1 && e1 != null)
         {
             errors.Add(e1);

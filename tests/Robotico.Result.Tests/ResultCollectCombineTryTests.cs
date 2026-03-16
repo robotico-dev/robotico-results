@@ -19,7 +19,7 @@ public class ResultCollectCombineTryTests
     [Fact]
     public void Collect_first_error_wins()
     {
-        SimpleError err = new SimpleError("first");
+        SimpleError err = new("first");
         Result<int>[] results = new[] { Result.Success(1), Result.Error<int>(err), Result.Success(3) };
         Result<ImmutableArray<int>> collected = results.Collect();
         Assert.True(collected.IsError(out IError? e));
@@ -62,7 +62,7 @@ public class ResultCollectCombineTryTests
     [Fact]
     public void Combine_one_error_returns_aggregate()
     {
-        SimpleError err = new SimpleError("e");
+        SimpleError err = new("e");
         Result<(int, string)> c = ResultUtilities.Combine(Result.Error<int>(err), Result.Success("a"));
         Assert.True(c.IsError(out IError? e));
         Assert.NotNull(e);
@@ -71,8 +71,8 @@ public class ResultCollectCombineTryTests
     [Fact]
     public void Combine_both_fail_returns_aggregate_with_both_errors()
     {
-        Error err1 = new Error("first");
-        Error err2 = new Error("second");
+        Error err1 = new("first");
+        Error err2 = new("second");
         Result<(int, string)> c = ResultUtilities.Combine(Result.Error<int>(err1), Result.Error<string>(err2));
         Assert.True(c.IsError(out IError? e));
         Assert.NotNull(e);
@@ -98,7 +98,7 @@ public class ResultCollectCombineTryTests
     [Fact]
     public void Combine_enumerable_first_error_wins()
     {
-        SimpleError err = new SimpleError("first");
+        SimpleError err = new("first");
         Result<int>[] results = new[] { Result.Success(1), Result.Error<int>(err), Result.Success(3) };
         Result<ImmutableArray<int>> combined = ResultUtilities.Combine(results);
         Assert.True(combined.IsError(out IError? e));

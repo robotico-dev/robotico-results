@@ -1,7 +1,5 @@
 namespace Robotico.Result.Errors;
 
-using System.Collections.Immutable;
-
 /// <summary>Extension methods for error types.</summary>
 public static class ErrorExtensions
 {

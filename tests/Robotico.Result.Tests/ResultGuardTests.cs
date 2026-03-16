@@ -121,7 +121,7 @@ public class ResultGuardTests
     [Fact]
     public void ValidationError_constructor_throws_when_errors_is_empty()
     {
-        Dictionary<string, string[]> empty = new Dictionary<string, string[]>();
+        Dictionary<string, string[]> empty = [];
         ArgumentException ex = Assert.Throws<ArgumentException>(() =>
             new ValidationError(empty));
         Assert.Equal("errors", ex.ParamName);

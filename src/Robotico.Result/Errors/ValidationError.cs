@@ -37,7 +37,7 @@ public sealed record ValidationError : IError
     {
         ArgumentNullException.ThrowIfNull(fieldName);
         ArgumentNullException.ThrowIfNull(errorMessage);
-        Dictionary<string, string[]> errors = new Dictionary<string, string[]>
+        Dictionary<string, string[]> errors = new()
         {
             [fieldName] = [errorMessage]
         };
@@ -54,7 +54,7 @@ public sealed record ValidationError : IError
             throw new ArgumentException("At least one error message is required", nameof(errorMessages));
         }
 
-        Dictionary<string, string[]> errors = new Dictionary<string, string[]>
+        Dictionary<string, string[]> errors = new()
         {
             [fieldName] = errorMessages
         };

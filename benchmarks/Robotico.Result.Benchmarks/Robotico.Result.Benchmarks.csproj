@@ -14,11 +14,11 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <PackageId>Robotico.Result.Benchmarks</PackageId>
     <!-- CA1707/CA1515: Benchmark naming and BenchmarkDotNet. -->
-    <NoWarn>$(NoWarn);CA1707;CA1515;CA1822</NoWarn>
+    <NoWarn>$(NoWarn);CA1707;CA1515;CA1822;IDE0005</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.15.6" />
+    <PackageReference Include="BenchmarkDotNet" />
   </ItemGroup>
 
   <ItemGroup>
