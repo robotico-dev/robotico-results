@@ -16,7 +16,9 @@ public static class ErrorExtensions
             foreach (Error e in error.CausedBy)
             {
                 foreach (string msg in e.GetErrorMessages())
+                {
                     yield return msg;
+                }
             }
             yield break;
         }
@@ -31,7 +33,10 @@ public static class ErrorExtensions
     {
         ArgumentNullException.ThrowIfNull(error);
         if (error is Error concrete)
+        {
             return concrete.GetErrorMessages();
+        }
+
         return [error.Message];
     }
 }

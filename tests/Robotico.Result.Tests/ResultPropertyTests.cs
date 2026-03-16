@@ -1,3 +1,4 @@
+using System.Globalization;
 using CsCheck;
 
 namespace Robotico.Result.Tests;
@@ -34,7 +35,7 @@ public class ResultPropertyTests
     [Fact]
     public void Map_identity_success_holds_for_generated_strings()
     {
-        Gen.Int.Select(i => i.ToString()).Sample(s =>
+        Gen.Int.Select(i => i.ToString(CultureInfo.InvariantCulture)).Sample(s =>
         {
             Result<string> r = Result.Success(s);
             Result<string> mapped = r.Map(x => x);
@@ -75,7 +76,7 @@ public class ResultPropertyTests
         Gen.Int.Sample(n =>
         {
             Result<int> r = Result.Error<int>(e);
-            Result<string> mapped = r.Map(x => (n + x).ToString());
+            Result<string> mapped = r.Map(x => (n + x).ToString(CultureInfo.InvariantCulture));
             return mapped.IsError(out IError? err) && ReferenceEquals(e, err);
         });
     }
@@ -147,7 +148,7 @@ public class ResultPropertyTests
         Gen.Const(new SimpleError("typed")).Sample(e =>
         {
             Result<int, SimpleError> r = Result.Error<int, SimpleError>(e);
-            Result<string, SimpleError> mapped = r.Map(x => x.ToString());
+            Result<string, SimpleError> mapped = r.Map(x => x.ToString(CultureInfo.InvariantCulture));
             return mapped.IsError(out SimpleError? e2) && ReferenceEquals(e, e2);
         });
     }

@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace Robotico.Result.Tests;
 
 /// <summary>
@@ -54,7 +56,7 @@ public class ResultLawsTests
     {
         SimpleError err = new SimpleError("x");
         Result<int> r = Result.Error<int>(err);
-        Result<string> mapped = r.Map(x => x.ToString());
+        Result<string> mapped = r.Map(x => x.ToString(CultureInfo.InvariantCulture));
         Assert.True(mapped.IsError(out IError? e));
         Assert.Same(err, e);
     }
@@ -64,7 +66,7 @@ public class ResultLawsTests
     {
         SimpleError err = new SimpleError("y");
         Result<int> r = Result.Error<int>(err);
-        Result<string> bound = r.Bind(x => Result.Success(x.ToString()));
+        Result<string> bound = r.Bind(x => Result.Success(x.ToString(CultureInfo.InvariantCulture)));
         Assert.True(bound.IsError(out IError? e));
         Assert.Same(err, e);
     }

@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace Robotico.Result.Tests;
 
 public class ResultBasicsTests
@@ -43,7 +45,7 @@ public class ResultBasicsTests
     public void Map_preserves_success()
     {
         Result<int> r = Result.Success(3);
-        Result<string> mapped = r.Map(x => (x * 2).ToString());
+        Result<string> mapped = r.Map(x => (x * 2).ToString(CultureInfo.InvariantCulture));
         Assert.True(mapped.IsSuccess(out string? s));
         Assert.Equal("6", s);
     }
@@ -53,7 +55,7 @@ public class ResultBasicsTests
     {
         SimpleError err = new SimpleError("x");
         Result<int> r = Result.Error<int>(err);
-        Result<string> mapped = r.Map(x => x.ToString());
+        Result<string> mapped = r.Map(x => x.ToString(CultureInfo.InvariantCulture));
         Assert.True(mapped.IsError(out IError? e));
         Assert.Same(err, e);
     }
@@ -62,7 +64,7 @@ public class ResultBasicsTests
     public void Bind_chains_success()
     {
         Result<int> r = Result.Success(2);
-        Result<string> bound = r.Bind(x => Result.Success((x + 1).ToString()));
+        Result<string> bound = r.Bind(x => Result.Success((x + 1).ToString(CultureInfo.InvariantCulture)));
         Assert.True(bound.IsSuccess(out string? s));
         Assert.Equal("3", s);
     }
@@ -72,7 +74,7 @@ public class ResultBasicsTests
     {
         SimpleError err = new SimpleError("y");
         Result<int> r = Result.Error<int>(err);
-        Result<string> bound = r.Bind(x => Result.Success(x.ToString()));
+        Result<string> bound = r.Bind(x => Result.Success(x.ToString(CultureInfo.InvariantCulture)));
         Assert.True(bound.IsError(out IError? e));
         Assert.Same(err, e);
     }

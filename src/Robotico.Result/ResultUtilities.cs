@@ -25,7 +25,10 @@ public static class ResultUtilities
         bool ok1 = r1.IsSuccess(out T1? v1, out IError? e1);
         bool ok2 = r2.IsSuccess(out T2? v2, out IError? e2);
         if (ok1 && ok2)
+        {
             return Result.Success((v1!, v2!));
+        }
+
         return Result.Error<(T1, T2)>(ToAggregate(CollectErrorList(e1, ok1, e2, ok2)));
     }
 
@@ -37,7 +40,10 @@ public static class ResultUtilities
         bool ok2 = r2.IsSuccess(out T2? v2, out IError? e2);
         bool ok3 = r3.IsSuccess(out T3? v3, out IError? e3);
         if (ok1 && ok2 && ok3)
+        {
             return Result.Success((v1!, v2!, v3!));
+        }
+
         return Result.Error<(T1, T2, T3)>(ToAggregate(CollectErrorList(e1, ok1, e2, ok2, e3, ok3)));
     }
 
@@ -50,39 +56,64 @@ public static class ResultUtilities
         bool ok3 = r3.IsSuccess(out T3? v3, out IError? e3);
         bool ok4 = r4.IsSuccess(out T4? v4, out IError? e4);
         if (ok1 && ok2 && ok3 && ok4)
+        {
             return Result.Success((v1!, v2!, v3!, v4!));
+        }
+
         return Result.Error<(T1, T2, T3, T4)>(ToAggregate(CollectErrorList(e1, ok1, e2, ok2, e3, ok3, e4, ok4)));
     }
 
     private static List<IError> CollectErrorList(IError? e1, bool ok1, IError? e2, bool ok2)
     {
         List<IError> errors = new List<IError>();
-        if (!ok1 && e1 != null) errors.Add(e1);
-        if (!ok2 && e2 != null) errors.Add(e2);
+        if (!ok1 && e1 != null)
+        {
+            errors.Add(e1);
+        }
+
+        if (!ok2 && e2 != null)
+        {
+            errors.Add(e2);
+        }
+
         return errors;
     }
 
     private static List<IError> CollectErrorList(IError? e1, bool ok1, IError? e2, bool ok2, IError? e3, bool ok3)
     {
         List<IError> errors = CollectErrorList(e1, ok1, e2, ok2);
-        if (!ok3 && e3 != null) errors.Add(e3);
+        if (!ok3 && e3 != null)
+        {
+            errors.Add(e3);
+        }
+
         return errors;
     }
 
     private static List<IError> CollectErrorList(IError? e1, bool ok1, IError? e2, bool ok2, IError? e3, bool ok3, IError? e4, bool ok4)
     {
         List<IError> errors = CollectErrorList(e1, ok1, e2, ok2, e3, ok3);
-        if (!ok4 && e4 != null) errors.Add(e4);
+        if (!ok4 && e4 != null)
+        {
+            errors.Add(e4);
+        }
+
         return errors;
     }
 
     private static IError ToAggregate(List<IError> errors)
     {
         if (errors.Count == 1)
+        {
             return errors[0];
+        }
+
         List<Error> asErrors = errors.OfType<Error>().ToList();
         if (asErrors.Count == errors.Count)
+        {
             return new AggregateError($"Multiple errors occurred ({errors.Count} total)", asErrors);
+        }
+
         return new SimpleError($"Multiple errors occurred ({errors.Count} total)", "AGG_ERRORS", ErrorSeverity.Error, context: new Dictionary<string, object> { ["Errors"] = errors });
     }
 

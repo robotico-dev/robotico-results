@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace Robotico.Result.Tests;
 
 /// <summary>
@@ -66,7 +68,7 @@ public class ResultGuardTests
     {
         Result<int> r = Result.Success(1);
         ArgumentNullException ex = Assert.Throws<ArgumentNullException>(() =>
-            r.Match(v => v.ToString(), null!));
+            r.Match(v => v.ToString(CultureInfo.InvariantCulture), null!));
         Assert.Equal("onError", ex.ParamName);
     }
 

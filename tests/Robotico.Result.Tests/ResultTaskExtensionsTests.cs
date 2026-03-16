@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace Robotico.Result.Tests;
 
 public class ResultTaskExtensionsTests
@@ -6,7 +8,7 @@ public class ResultTaskExtensionsTests
     public async Task MapAsync_TaskOfResultT()
     {
         Task<Result<int>> t = Task.FromResult(Result.Success(5));
-        Result<string> mapped = await t.MapAsync(x => (x * 2).ToString());
+        Result<string> mapped = await t.MapAsync(x => (x * 2).ToString(CultureInfo.InvariantCulture));
         Assert.True(mapped.IsSuccess(out string? s));
         Assert.Equal("10", s);
     }
@@ -15,7 +17,7 @@ public class ResultTaskExtensionsTests
     public async Task BindAsync_TaskOfResultT()
     {
         Task<Result<int>> t = Task.FromResult(Result.Success(4));
-        Result<string> bound = await t.BindAsync(x => Task.FromResult(Result.Success(x.ToString())));
+        Result<string> bound = await t.BindAsync(x => Task.FromResult(Result.Success(x.ToString(CultureInfo.InvariantCulture))));
         Assert.True(bound.IsSuccess(out string? s));
         Assert.Equal("4", s);
     }
@@ -55,7 +57,7 @@ public class ResultTaskExtensionsTests
     public async Task MatchAsync_TaskOfResultTDataTError_success()
     {
         Task<Result<int, SimpleError>> t = Task.FromResult(Result.Success<int, SimpleError>(7));
-        string s = await t.MatchAsync(v => v.ToString(), _ => "error");
+        string s = await t.MatchAsync(v => v.ToString(CultureInfo.InvariantCulture), _ => "error");
         Assert.Equal("7", s);
     }
 

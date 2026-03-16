@@ -71,7 +71,10 @@ public readonly partial struct Result : IEquatable<Result>
     public static Result FromVoid<TData>(Result<TData> r)
     {
         if (r.IsSuccess(out _))
+        {
             return Success();
+        }
+
         r.IsError(out IError? e);
         return Error(e!);
     }
@@ -85,7 +88,10 @@ public readonly partial struct Result : IEquatable<Result>
         where TError : class, IError
     {
         if (r.IsSuccess(out _))
+        {
             return Success();
+        }
+
         r.IsError(out TError? e);
         return Error(e!);
     }
@@ -173,7 +179,9 @@ public readonly partial struct Result : IEquatable<Result>
     {
         ArgumentNullException.ThrowIfNull(exceptionBuilder);
         if (IsError(out IError? err))
+        {
             throw exceptionBuilder(err);
+        }
     }
 
     /// <inheritdoc />

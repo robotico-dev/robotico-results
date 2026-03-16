@@ -21,7 +21,7 @@ public class ResultMapBindBenchmarks
     [Benchmark]
     public Result<string> Success_Map_ToString()
     {
-        return Success42.Map(x => x.ToString());
+        return Success42.Map(x => x.ToString(System.Globalization.CultureInfo.InvariantCulture));
     }
 
     [Benchmark]

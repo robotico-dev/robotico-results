@@ -17,7 +17,9 @@ public static class ResultExtensions
         ArgumentNullException.ThrowIfNull(onSuccess);
         ArgumentNullException.ThrowIfNull(onError);
         if (r.IsSuccess())
+        {
             return onSuccess();
+        }
         r.IsError(out IError? err);
         return onError(err!);
     }
@@ -28,7 +30,9 @@ public static class ResultExtensions
         ArgumentNullException.ThrowIfNull(onSuccess);
         ArgumentNullException.ThrowIfNull(onError);
         if (r.IsSuccess())
+        {
             onSuccess();
+        }
         else
         {
             r.IsError(out IError? err);
@@ -43,7 +47,10 @@ public static class ResultExtensions
     {
         ArgumentNullException.ThrowIfNull(action);
         if (r.IsSuccess())
+        {
             action();
+        }
+
         return r;
     }
 
@@ -52,7 +59,10 @@ public static class ResultExtensions
     {
         ArgumentNullException.ThrowIfNull(action);
         if (r.IsError(out IError? err))
+        {
             action(err!);
+        }
+
         return r;
     }
 
@@ -76,9 +86,13 @@ public static class ResultExtensions
         ArgumentNullException.ThrowIfNull(onSuccess);
         ArgumentNullException.ThrowIfNull(onError);
         if (r.IsSuccess(out TData? data, out IError? err))
+        {
             onSuccess(data!);
+        }
         else
+        {
             onError(err!);
+        }
     }
 
     /// <summary>Pattern match for Result&lt;TData, TError&gt;.</summary>
@@ -98,7 +112,10 @@ public static class ResultExtensions
     {
         ArgumentNullException.ThrowIfNull(action);
         if (r.IsSuccess(out TData? data))
+        {
             action(data!);
+        }
+
         return r;
     }
 
@@ -108,7 +125,10 @@ public static class ResultExtensions
     {
         ArgumentNullException.ThrowIfNull(action);
         if (r.IsError(out TError? err))
+        {
             action(err!);
+        }
+
         return r;
     }
 
@@ -118,7 +138,10 @@ public static class ResultExtensions
     {
         ArgumentNullException.ThrowIfNull(action);
         if (r.IsSuccess(out TData? data))
+        {
             await action(data!).ConfigureAwait(false);
+        }
+
         return r;
     }
 
@@ -128,7 +151,10 @@ public static class ResultExtensions
     {
         ArgumentNullException.ThrowIfNull(action);
         if (r.IsError(out TError? err))
+        {
             await action(err!).ConfigureAwait(false);
+        }
+
         return r;
     }
 
@@ -140,7 +166,10 @@ public static class ResultExtensions
     {
         ArgumentNullException.ThrowIfNull(fallback);
         if (r.IsSuccess(out TData? data))
+        {
             return r;
+        }
+
         r.IsError(out TError? err);
         return Result.Success<TData, TError>(fallback(err!));
     }
@@ -156,7 +185,10 @@ public static class ResultExtensions
     {
         ArgumentNullException.ThrowIfNull(fallback);
         if (r.IsSuccess(out _))
+        {
             return r;
+        }
+
         r.IsError(out TError? err);
         TData value = await fallback(err!).ConfigureAwait(false);
         return Result.Success<TData, TError>(value);
@@ -169,7 +201,10 @@ public static class ResultExtensions
     {
         ArgumentNullException.ThrowIfNull(action);
         if (r.IsSuccess(out TData? data))
+        {
             action(data!);
+        }
+
         return r;
     }
 
@@ -178,7 +213,10 @@ public static class ResultExtensions
     {
         ArgumentNullException.ThrowIfNull(action);
         if (r.IsError(out IError? err))
+        {
             action(err!);
+        }
+
         return r;
     }
 
@@ -187,7 +225,10 @@ public static class ResultExtensions
     {
         ArgumentNullException.ThrowIfNull(action);
         if (r.IsSuccess(out TData? data))
+        {
             await action(data!).ConfigureAwait(false);
+        }
+
         return r;
     }
 
@@ -196,7 +237,10 @@ public static class ResultExtensions
     {
         ArgumentNullException.ThrowIfNull(action);
         if (r.IsError(out IError? err))
+        {
             await action(err!).ConfigureAwait(false);
+        }
+
         return r;
     }
 
@@ -207,7 +251,10 @@ public static class ResultExtensions
     {
         ArgumentNullException.ThrowIfNull(fallback);
         if (r.IsSuccess(out TData? data))
+        {
             return r;
+        }
+
         r.IsError(out IError? err);
         return Result.Success(fallback(err!));
     }
@@ -230,7 +277,10 @@ public static class ResultExtensions
     {
         ArgumentNullException.ThrowIfNull(fallback);
         if (r.IsSuccess(out _))
+        {
             return r;
+        }
+
         r.IsError(out IError? err);
         TData value = await fallback(err!).ConfigureAwait(false);
         return Result.Success(value);
@@ -244,7 +294,10 @@ public static class ResultExtensions
         ArgumentNullException.ThrowIfNull(predicate);
         ArgumentNullException.ThrowIfNull(errorFactory);
         if (r.IsError(out _))
+        {
             return r;
+        }
+
         r.IsSuccess(out TData? value);
         return predicate(value!) ? r : Result.Error<TData>(errorFactory(value!));
     }
@@ -260,7 +313,10 @@ public static class ResultExtensions
         ArgumentNullException.ThrowIfNull(predicate);
         ArgumentNullException.ThrowIfNull(errorFactory);
         if (r.IsError(out _))
+        {
             return r;
+        }
+
         r.IsSuccess(out TData? value);
         return predicate(value!) ? r : Result.Error<TData, TError>(errorFactory(value!));
     }
@@ -281,9 +337,13 @@ public static class ResultExtensions
         foreach (Result<TData> r in results)
         {
             if (r.IsSuccess(out TData? value))
+            {
                 builder.Add(value!);
+            }
             else if (r.IsError(out IError? err))
+            {
                 return Result.Error<ImmutableArray<TData>>(err!);
+            }
         }
         return Result.Success(builder.ToImmutable());
     }
@@ -299,7 +359,9 @@ public static class ResultExtensions
         foreach (Result<TData> r in results)
         {
             if (r.IsSuccess(out TData? value))
+            {
                 yield return value!;
+            }
         }
     }
 
@@ -310,7 +372,10 @@ public static class ResultExtensions
     {
         ArgumentNullException.ThrowIfNull(errorMapping);
         if (r.IsSuccess(out TData? value))
+        {
             return Result.Success(value!);
+        }
+
         r.IsError(out IError? err);
         return Result.Error<TData>(errorMapping(err!));
     }

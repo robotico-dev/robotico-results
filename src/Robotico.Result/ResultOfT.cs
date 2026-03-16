@@ -118,7 +118,10 @@ public readonly partial struct Result<TData> : IEquatable<Result<TData>>
     {
         ArgumentNullException.ThrowIfNull(exceptionBuilder);
         if (IsError(out _, out IError? err))
+        {
             throw exceptionBuilder(err);
+        }
+
         return SuccessValue!;
     }
 
@@ -129,7 +132,10 @@ public readonly partial struct Result<TData> : IEquatable<Result<TData>>
     public bool Equals(Result<TData> other)
     {
         if (IsSuccessState != other.IsSuccessState)
+        {
             return false;
+        }
+
         return IsSuccessState
             ? EqualityComparer<TData>.Default.Equals(SuccessValue, other.SuccessValue)
             : ReferenceEquals(ErrorValue, other.ErrorValue);

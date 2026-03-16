@@ -6,8 +6,8 @@
     <PackageId>Robotico.Result.Tests</PackageId>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <!-- Test method names use underscores for readability; allow blocking in sync tests; no XML doc requirement for tests; CA2007 suppressed so tests can use plain await (xUnit1030 discourages ConfigureAwait(false) in tests). -->
-    <NoWarn>$(NoWarn);CA1707;CA1305;xUnit2002;xUnit1031;CS1591;CA2007</NoWarn>
+    <!-- CA1707/CA1515: Test naming and discovery. CA2007: Test code may use plain await. -->
+    <NoWarn>$(NoWarn);CA1707;CA1515;CA2007</NoWarn>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <CoverletOutputFormat>cobertura</CoverletOutputFormat>
   </PropertyGroup>

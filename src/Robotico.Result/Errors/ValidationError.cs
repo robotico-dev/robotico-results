@@ -19,7 +19,9 @@ public sealed record ValidationError : IError
     {
         ArgumentNullException.ThrowIfNull(errors);
         if (errors.Count == 0)
+        {
             throw new ArgumentException("At least one validation error is required", nameof(errors));
+        }
 
         Errors = errors;
         int totalErrors = errors.Values.Sum(v => v.Length);
@@ -48,7 +50,9 @@ public sealed record ValidationError : IError
         ArgumentNullException.ThrowIfNull(fieldName);
         ArgumentNullException.ThrowIfNull(errorMessages);
         if (errorMessages.Length == 0)
+        {
             throw new ArgumentException("At least one error message is required", nameof(errorMessages));
+        }
 
         Dictionary<string, string[]> errors = new Dictionary<string, string[]>
         {

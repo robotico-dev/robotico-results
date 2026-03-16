@@ -47,7 +47,10 @@ public static class ResultTaskExtensions
         ArgumentNullException.ThrowIfNull(action);
         Result r = await task.ConfigureAwait(false);
         if (r.IsSuccess())
+        {
             await action().ConfigureAwait(false);
+        }
+
         return r;
     }
 
