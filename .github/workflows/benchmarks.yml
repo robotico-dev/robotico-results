@@ -33,8 +33,7 @@ jobs:
 
       - name: Run benchmarks (ShortRun)
         run: |
-          cd benchmarks/Robotico.Result.Benchmarks
-          dotnet run -c Release --no-build -- --filter "*" --job ShortRun
+          dotnet run --project benchmarks/Robotico.Result.Benchmarks/Robotico.Result.Benchmarks.csproj -c Release -f net8.0 --no-build -- --filter "*" --job ShortRun
         id: run-benchmarks
 
       - name: Upload benchmark results
