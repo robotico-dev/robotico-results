@@ -1,3 +1,4 @@
+# Reference workflow; robotico-mediator-csharp and validation/specification/mapper align to this structure. Coverage 90%.
 name: Build and Publish
 
 on:
@@ -31,6 +32,9 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
 
+      - name: Authenticate to GitHub Packages
+        run: dotnet nuget update source github --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
+
       - name: Restore
         run: |
           dotnet restore src/Robotico.Result/Robotico.Result.Lib.csproj
@@ -45,6 +49,16 @@ jobs:
         run: |
           dotnet test tests/Robotico.Result.Tests/Robotico.Result.Tests.csproj --no-build -c Release --verbosity normal \
             --collect:"XPlat Code Coverage" --results-directory ./coverage
+
+      - name: Check coverage threshold (90% line)
+        run: |
+          COV_FILE=$(find ./coverage -name 'coverage.cobertura.xml' 2>/dev/null | head -1)
+          if [ -z "$COV_FILE" ]; then echo "No coverage file found"; exit 1; fi
+          RATE=$(sed -n 's/.*line-rate="\([^"]*\)".*/\1/p' "$COV_FILE" | head -1)
+          if [ -z "$RATE" ]; then echo "Could not parse line-rate"; exit 1; fi
+          PERCENT=$(echo "$RATE * 100" | bc)
+          echo "Line coverage: ${PERCENT}%"
+          if [ "$(echo "$RATE < 0.90" | bc)" -eq 1 ]; then echo "Coverage ${PERCENT}% is below 90%"; exit 1; fi
 
       - name: Upload coverage (main/PR)
         uses: codecov/codecov-action@v4
@@ -63,6 +77,9 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "10.0.x"
+
+      - name: Authenticate to GitHub Packages
+        run: dotnet nuget update source github --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
 
       - name: Restore
         run: dotnet restore src/Robotico.Result/Robotico.Result.Lib.csproj
@@ -84,6 +101,9 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "10.0.x"
+
+      - name: Authenticate to GitHub Packages
+        run: dotnet nuget update source github --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
 
       - name: Derive version from tag
         id: version
