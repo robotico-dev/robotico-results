@@ -1,3 +1,5 @@
+# Repo-root Robotico.Library.*.props are vendored MSBuild defaults (standalone GitHub CI).
+
 # Build
 [Dd]ebug/
 [Rr]elease/
@@ -11,7 +13,6 @@ x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
-[Oo]ut/
 msbuild.binlog
 *.log
 
@@ -52,9 +53,6 @@ BenchmarkDotNet.Artifacts/
 # OS
 .DS_Store
 Thumbs.db
-
-# Rider
-.idea/
 
 # CodeRush
 *.cr.userlog
