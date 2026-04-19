@@ -7,6 +7,10 @@ namespace Robotico.Result.Errors;
 /// </summary>
 public sealed record SimpleError : IError
 {
+#pragma warning disable IDE0301 // Empty ImmutableDictionary: target-typed [] is not constructible for this type on net8.0 (CS9174/CS1729); Empty is the supported API.
+    private static readonly ImmutableDictionary<string, object> EmptyContextDictionary = ImmutableDictionary<string, object>.Empty;
+#pragma warning restore IDE0301
+
     /// <summary>Creates a simple error with full control over all properties.</summary>
     public SimpleError(
         string message,
@@ -19,7 +23,7 @@ public sealed record SimpleError : IError
         Code = code ?? throw new ArgumentNullException(nameof(code));
         Severity = severity;
         InnerError = innerError;
-        Context = context is null ? ImmutableDictionary<string, object>.Empty : ImmutableDictionary.CreateRange(context);
+        Context = context is null ? EmptyContextDictionary : ImmutableDictionary.CreateRange(context);
     }
 
     /// <summary>Creates a simple error with only a message.</summary>

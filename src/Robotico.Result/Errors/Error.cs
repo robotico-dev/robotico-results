@@ -21,14 +21,14 @@ public class Error : IError
         Severity = ErrorSeverity.Error;
         InnerError = null;
         Context = ImmutableDictionary<string, object>.Empty;
-        CausedBy = ImmutableArray<Error>.Empty;
+        CausedBy = [];
     }
 
     /// <summary>Creates an error with the given message and causes.</summary>
     public Error(string message, IEnumerable<Error> causedBy)
     {
         Message = message ?? throw new ArgumentNullException(nameof(message));
-        CausedBy = causedBy?.ToImmutableArray() ?? ImmutableArray<Error>.Empty;
+        CausedBy = causedBy?.ToImmutableArray() ?? [];
         Code = "ERROR";
         Severity = ErrorSeverity.Error;
         InnerError = CausedBy.FirstOrDefault();

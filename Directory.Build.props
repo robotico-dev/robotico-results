@@ -13,8 +13,9 @@
     (CA1031, CA1716, CA1032 are suppressed at call site with SuppressMessage.)
   -->
   <PropertyGroup>
-    <NoWarn>$(NoWarn)</NoWarn>
-    <Version>1.0.1</Version>
+    <!-- Meziantou: naming/layout rules do not fit Result library design (see AnalyzerDefaults.props). -->
+    <NoWarn>$(NoWarn);MA0002;MA0048;MA0049;MA0056</NoWarn>
+    <Version>1.0.2</Version>
     <Product>Robotico.Result</Product>
     <PackageId>Robotico.Result</PackageId>
     <Title>Robotico.Result</Title>
