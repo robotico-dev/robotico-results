@@ -1,0 +1,42 @@
+# Woodpecker — robotico-results
+# MUST: Version in Directory.Build.props → tag v{Version} → pack → download.robotico.dev
+
+when:
+  - event: pull_request
+  - event: push
+    branch: main
+
+steps:
+  restore-build-test:
+    image: mcr.microsoft.com/dotnet/sdk:10.0
+    commands:
+      - |
+        test -f Directory.Build.props || { echo "MUST - Directory.Build.props required"; exit 1; }
+      - dotnet restore tests/Robotico.Result.Tests/Robotico.Result.Tests.csproj -p:NuGetAudit=false -p:RunAnalyzersDuringBuild=false
+      - dotnet build tests/Robotico.Result.Tests/Robotico.Result.Tests.csproj -c Release --no-restore -p:NuGetAudit=false -p:RunAnalyzersDuringBuild=false
+      - dotnet test tests/Robotico.Result.Tests/Robotico.Result.Tests.csproj -c Release --no-build --verbosity minimal -p:NuGetAudit=false -p:RunAnalyzersDuringBuild=false
+    when:
+      - event: [pull_request, push]
+
+  release:
+    image: mcr.microsoft.com/dotnet/sdk:10.0
+    environment:
+      PUBLISH_TOKEN:
+        from_secret: publish_token
+      GITEA_TOKEN:
+        from_secret: gitea_token
+      PACK_VERSION_PROJECT: src/Robotico.Result/Robotico.Result.Lib.csproj
+    commands:
+      - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends git ca-certificates
+      - |
+        test -f Directory.Build.props || { echo "MUST - Directory.Build.props required"; exit 1; }
+      - dotnet restore tests/Robotico.Result.Tests/Robotico.Result.Tests.csproj -p:NuGetAudit=false -p:RunAnalyzersDuringBuild=false
+      - dotnet build tests/Robotico.Result.Tests/Robotico.Result.Tests.csproj -c Release --no-restore -p:NuGetAudit=false -p:RunAnalyzersDuringBuild=false
+      - dotnet test tests/Robotico.Result.Tests/Robotico.Result.Tests.csproj -c Release --no-build --verbosity minimal -p:NuGetAudit=false -p:RunAnalyzersDuringBuild=false
+      - bash scripts/woodpecker-release.sh
+    when:
+      - event: push
+        branch: main
+        path:
+          exclude:
+            - README.md

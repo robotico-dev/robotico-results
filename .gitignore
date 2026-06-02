@@ -59,3 +59,4 @@ Thumbs.db
 
 # Doc build (if any)
 doc/build/
+nupkgs/

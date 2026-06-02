@@ -1,4 +1,6 @@
 # Robotico.Result
+[![Woodpecker CI](https://dvalin.robotico.dev/api/badges/robotico/robotico-results/status.svg)](https://dvalin.robotico.dev/robotico/robotico-results)
+
 
 Industry-standard Result and error types for .NET 8 and .NET 10. Railway-oriented, immutable, **zero package dependencies** (no NuGet dependencies when you install). Trim-friendly; no reflection on hot paths.
 
