@@ -16,7 +16,7 @@ Result types are *values*, not references. They are `readonly struct`s:
 * Every transformation returns a new instance; the original is unchanged.
 * No implicit conversions; conversions between `Result`, `Result<TData>`, and `Result<TData, TError>` are explicit (`FromVoid`, `From`, `FromWithIError`) to satisfy analyzer rules and keep intent clear.
 
-[source,mermaid]
+[mermaid]
 ----
 flowchart LR
   A[Result.Success&#40;42&#41;] -->|Map| B[Result.Success&#40;&quot;42&quot;&#41;]
@@ -42,7 +42,7 @@ This allows:
 
 Exceptions are used only at the boundary:
 
-[source,mermaid]
+[mermaid]
 ----
 flowchart LR
   subgraph Domain["Domain"]

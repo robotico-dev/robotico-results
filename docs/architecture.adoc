@@ -14,7 +14,7 @@ Robotico.Result is a single-assembly, zero-dependency library that provides rail
 
 The library is organized into core result types, extension methods, utilities, and error types.
 
-[source,mermaid]
+[mermaid]
 ----
 flowchart TB
   subgraph Results["Result types"]
@@ -60,7 +60,7 @@ flowchart TB
 
 Operations either succeed (with optional data) or fail (with an error). Transformations keep you on one track; errors propagate without explicit branching until you match or convert at the boundary.
 
-[source,mermaid]
+[mermaid]
 ----
 flowchart LR
   subgraph Success["Success path"]
@@ -84,7 +84,7 @@ flowchart LR
 
 Results are kept inside the domain; conversion to exceptions happens only at process or API boundaries (e.g. controllers, entry points, or when integrating with exception-based APIs).
 
-[source,mermaid]
+[mermaid]
 ----
 flowchart TB
   subgraph ResultWorld["Result world (domain)"]
@@ -112,7 +112,7 @@ flowchart TB
 
 == Assembly Layout
 
-[source,mermaid]
+[mermaid]
 ----
 flowchart LR
   subgraph Lib["Robotico.Result (library)"]

@@ -22,7 +22,7 @@ asciidoctor docs/architecture.adoc -o docs/architecture.html
 asciidoctor docs/design.adoc -o docs/design.html
 ----
 
-Or use the AsciiDoc extension in your editor for preview. Mermaid diagrams render in Asciidoctor when using the https://asciidoctor.org/docs/asciidoctor-diagram/[asciidoctor-diagram] extension or a converter that supports `[source,mermaid]` blocks.
+Or use the AsciiDoc extension in your editor for preview. Mermaid diagrams render in Asciidoctor when using the https://asciidoctor.org/docs/asciidoctor-diagram/[asciidoctor-diagram] extension or a converter that supports `[mermaid]` blocks.
 
 == Repository
 
