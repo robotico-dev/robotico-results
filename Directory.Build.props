@@ -15,7 +15,7 @@
   <PropertyGroup>
     <!-- Meziantou: naming/layout rules do not fit Result library design (see AnalyzerDefaults.props). -->
     <NoWarn>$(NoWarn);MA0002;MA0048;MA0049;MA0056</NoWarn>
-    <Version>1.0.2</Version>
+    <Version>1.0.4</Version>
     <Product>Robotico.Result</Product>
     <PackageId>Robotico.Result</PackageId>
     <Title>Robotico.Result</Title>

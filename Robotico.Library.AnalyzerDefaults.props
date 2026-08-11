@@ -12,9 +12,9 @@
     <AnalysisLevel>latest-all</AnalysisLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Authors>Robotico</Authors>
-    <Company>Robotico</Company>
-    <Copyright>Copyright © Robotico</Copyright>
+    <Authors>robotico.dev Kft.</Authors>
+    <Company>robotico.dev Kft.</Company>
+    <Copyright>Copyright © 2026 robotico.dev Kft.</Copyright>
     <RepositoryType>git</RepositoryType>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisMode>All</AnalysisMode>

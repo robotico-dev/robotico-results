@@ -4,7 +4,7 @@
     <RootNamespace>Robotico.Result</RootNamespace>
     <AssemblyName>Robotico.Result</AssemblyName>
     <PackageIcon>logosquare.png</PackageIcon>
-    <PackageProjectUrl>https://github.com/robotico/robotico-results</PackageProjectUrl>
+    <PackageProjectUrl>https://download.robotico.dev</PackageProjectUrl>
     <RepositoryUrl>https://github.com/robotico/robotico-results</RepositoryUrl>
     <RepositoryBranch>main</RepositoryBranch>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

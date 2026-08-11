@@ -108,7 +108,7 @@ public static class ResultUtilities
             return errors[0];
         }
 
-        List<Error> asErrors = errors.OfType<Error>().ToList();
+        List<Error> asErrors = [.. errors.OfType<Error>()];
         if (asErrors.Count == errors.Count)
         {
             return new AggregateError($"Multiple errors occurred ({errors.Count} total)", asErrors);

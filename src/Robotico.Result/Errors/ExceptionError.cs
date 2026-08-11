@@ -1,15 +1,14 @@
 namespace Robotico.Result.Errors;
 
 /// <summary>An error that wraps an exception.</summary>
-public sealed class ExceptionError : Error
+public sealed class ExceptionError(Exception exception) : Error(BaseMessage(exception))
 {
-    /// <summary>Creates an exception error wrapping the given exception.</summary>
-    public ExceptionError(Exception exception)
-        : base(exception?.Message ?? "An exception occurred")
-    {
-        Exception = exception ?? throw new ArgumentNullException(nameof(exception));
-    }
-
     /// <summary>The wrapped exception.</summary>
-    public Exception Exception { get; }
+    public Exception Exception { get; } = exception;
+
+    private static string BaseMessage(Exception? ex)
+    {
+        ArgumentNullException.ThrowIfNull(ex);
+        return ex.Message ?? "An exception occurred";
+    }
 }
